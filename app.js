@@ -38,12 +38,12 @@ app.get('/blogs', function(req, res){
     })
 })
 
-// NEW route
+// NEW route - form for new post
 app.get('/blogs/new', function(req, res){
     res.render('new')
 })
 
-// CREATE route
+// CREATE route - adds new post to DB
 app.post('/blogs', function(req, res){
     //Create blog
     Blog.create(req.body.blog, function(err, newBlog){
@@ -56,7 +56,7 @@ app.post('/blogs', function(req, res){
     })
 })
 
-// SHOW route
+// SHOW route - more details on a single post
 app.get('/blogs/:id', function(req, res){
     Blog.findById(req.params.id, function(err, foundBlog){
         if(err){
@@ -67,7 +67,7 @@ app.get('/blogs/:id', function(req, res){
     })
 })
 
-// EDIT route
+// EDIT route - edit form prefilled with existing data
 app.get('/blogs/:id/edit', function(req, res){
     Blog.findById(req.params.id, function(err, foundBlog){
         if(err){
@@ -78,17 +78,27 @@ app.get('/blogs/:id/edit', function(req, res){
     })
 })
 
-// UPDATE route
+// UPDATE route - edits and updates existing post on DB
 app.put('/blogs/:id', function(req, res){
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
         if (err){
             res.redirect('/blogs')
         } else {
-            res.redirect('/blogs' + req.params.id)
+            res.redirect('/blogs/' + req.params.id)
         }
     })
 })
 
+// DELETE route - deletes post from DB
+app.delete('/blogs/:id', function(req, res){
+    Blog.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            res.redirect('/blogs')
+        } else {
+            res.redirect('/blogs')
+        }
+    })
+})
 
 // Start Localhost Server
 app.listen(3000, function(){
