@@ -80,9 +80,17 @@ app.get('/blogs/:id/edit', function(req, res){
 
 // UPDATE route
 app.put('/blogs/:id', function(req, res){
-    res.send('Update')
+    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
+        if (err){
+            res.redirect('/blogs')
+        } else {
+            res.redirect('/blogs' + req.params.id)
+        }
+    })
 })
 
+
+// Start Localhost Server
 app.listen(3000, function(){
     console.log("Server is running...")
 })
